@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TvPadKey" parent="Widget.MaterialComponents.Button.OutlinedButton">
+        <item name="android:layout_width">44dp</item>
+        <item name="android:layout_height">40dp</item>
+        <item name="android:layout_margin">2dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:minHeight">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:padding">0dp</item>
+        <item name="android:gravity">center</item>
+        <item name="android:textSize">15sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">@color/text</item>
+        <item name="android:focusable">true</item>
+        <item name="android:clickable">true</item>
+        <item name="strokeColor">@color/accent_dim</item>
+        <item name="strokeWidth">1dp</item>
+        <item name="backgroundTint">@color/panel</item>
+        <item name="rippleColor">@color/accent</item>
+        <item name="cornerRadius">4dp</item>
+    </style>
+</resources>

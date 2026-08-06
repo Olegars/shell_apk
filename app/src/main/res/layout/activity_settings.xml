@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg"
+    android:orientation="vertical"
+    android:padding="48dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/settings"
+        android:textColor="@color/accent"
+        android:textSize="36sp"
+        android:textStyle="italic|bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TvEdit"
+        android:layout_width="640dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="36dp"
+        android:hint="@string/server_url">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/serverUrlInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textUri"
+            android:textColor="@color/text"
+            android:textSize="22sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/TvEdit"
+        android:layout_width="640dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:hint="@string/terminal_id">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/terminalIdInput"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="number"
+            android:textColor="@color/text"
+            android:textSize="22sp" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/saveButton"
+        style="@style/TvButton"
+        android:layout_width="640dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="28dp"
+        android:text="@string/save" />
+
+</LinearLayout>

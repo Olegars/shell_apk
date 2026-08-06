@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">CompClub TV</string>
+    <string name="login_title">Вход в сессию</string>
+    <string name="phone_hint">Телефон</string>
+    <string name="pin_hint">PIN (4 цифры)</string>
+    <string name="login_action">Войти</string>
+    <string name="settings">Настройки</string>
+    <string name="logout">Завершить сессию</string>
+    <string name="server_url">URL сервера</string>
+    <string name="terminal_id">Terminal ID (computer_id)</string>
+    <string name="save">Сохранить</string>
+    <string name="balance">Баланс</string>
+    <string name="time_left">Осталось</string>
+    <string name="command_port">LAN команды: порт %1$d</string>
+    <string name="setup_title">REACTOR TV · SETUP</string>
+    <string name="back">НАЗАД</string>
+    <string name="station_name">Имя станции</string>
+    <string name="check_hwid">ПРОВЕРИТЬ</string>
+    <string name="register_tv">ЗАРЕГИСТРИРОВАТЬ TV</string>
+    <string name="fan_title">ВЕНТИЛЯТОР · DISCOVERY</string>
+    <string name="fan_hint">ТЕСТ пульсирует mid ~2с. Услышали свой — ПРИВЯЗАТЬ. В комнате до 2 вентиляторов.</string>
+    <string name="fan_board">Плата</string>
+    <string name="fan_pair">Пара каналов</string>
+    <string name="fan_refresh">ОБНОВИТЬ</string>
+    <string name="fan_test">ТЕСТ</string>
+    <string name="fan_bind">ПРИВЯЗАТЬ</string>
+    <string name="fan_bound">ПРИВЯЗАНО</string>
+    <string name="num_pad_hint">Цифры пультом · системная клавиатура выкл.</string>
+    <string name="device_admin_desc">CompClub TV kiosk / Lock Task</string>
+    <string name="admin_setup_hint">Сервис: 5× тап по заголовку, PIN 0451</string>
+    <string name="sos">SOS</string>
+    <string name="sos_title">Вызов администратора</string>
+    <string name="sos_sent">Вызов отправлен</string>
+    <string name="extend_session">Продлить</string>
+    <string name="extend_title">Сумма пополнения</string>
+    <string name="extend_qr_hint">Оплатите %1$d ₽ по QR на телефоне</string>
+    <string name="extend_failed">Не удалось создать оплату</string>
+    <string name="apps_label">Приложения</string>
+    <string name="apps_empty">Нет доступных приложений</string>
+    <string name="hdmi_label">Входы HDMI</string>
+    <string name="hdmi_failed">Не удалось переключить вход</string>
+    <string name="launch_failed">Не удалось запустить</string>
+</resources>

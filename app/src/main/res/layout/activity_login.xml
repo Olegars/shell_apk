@@ -1,0 +1,287 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg">
+
+    <!-- Left CAM / DAT / INF column (like PC shell) -->
+    <LinearLayout
+        android:id="@+id/overlayLeftColumn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/centerGuideStart"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.26">
+
+        <include
+            android:id="@+id/blockTopLeft"
+            layout="@layout/item_overlay_block"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/blockMidLeft"
+            layout="@layout/item_overlay_block"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/blockBottomLeft"
+            layout="@layout/item_overlay_block"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerGuideStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.30" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/centerGuideEnd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.70" />
+
+    <!-- Center login (PC: REACTOR form) -->
+    <ScrollView
+        android:id="@+id/centerScroll"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:fillViewport="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@id/centerGuideEnd"
+        app:layout_constraintStart_toEndOf="@id/centerGuideStart"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_horizontal"
+            android:orientation="vertical"
+            android:paddingHorizontal="16dp"
+            android:paddingTop="16dp"
+            android:paddingBottom="12dp">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:clickable="true"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/login_title"
+                android:textColor="@color/accent"
+                android:textSize="26sp"
+                android:textStyle="italic|bold" />
+
+            <TextView
+                android:id="@+id/subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="4dp"
+                android:gravity="center"
+                android:textColor="@color/text_muted"
+                android:textSize="11sp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/phoneLayout"
+                style="@style/TvEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="@string/phone_hint"
+                android:maxWidth="320dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/phoneInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:importantForAutofill="no"
+                    android:inputType="none"
+                    android:maxLines="1"
+                    android:nextFocusDown="@id/pinInput"
+                    android:textColor="@color/text"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/pinLayout"
+                style="@style/TvEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/pin_hint"
+                android:maxWidth="320dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/pinInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:cursorVisible="true"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:inputType="none"
+                    android:maxLength="4"
+                    android:maxLines="1"
+                    android:nextFocusDown="@id/loginButton"
+                    android:textColor="@color/text"
+                    android:textSize="18sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/loginButton"
+                style="@style/TvButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:maxWidth="320dp"
+                android:minHeight="48dp"
+                android:text="@string/login_action"
+                android:textAlignment="center" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/settingsButton"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:maxWidth="360dp"
+                android:minHeight="48dp"
+                android:text="@string/settings"
+                android:textAlignment="center"
+                android:textColor="@color/accent"
+                android:visibility="gone"
+                app:strokeColor="@color/accent" />
+
+            <TextView
+                android:id="@+id/errorText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:textColor="@color/danger"
+                android:textSize="14sp"
+                android:visibility="gone" />
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:layout_marginTop="8dp"
+                android:visibility="gone" />
+
+            <LinearLayout
+                android:id="@+id/numPad"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:background="@color/panel"
+                android:orientation="vertical"
+                android:padding="6dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:paddingBottom="2dp"
+                    android:text="@string/num_pad_hint"
+                    android:textColor="@color/text_muted"
+                    android:textSize="10sp" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key1" style="@style/TvPadKey" android:text="1" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key2" style="@style/TvPadKey" android:text="2" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key3" style="@style/TvPadKey" android:text="3" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key4" style="@style/TvPadKey" android:text="4" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key5" style="@style/TvPadKey" android:text="5" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key6" style="@style/TvPadKey" android:text="6" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key7" style="@style/TvPadKey" android:text="7" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key8" style="@style/TvPadKey" android:text="8" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key9" style="@style/TvPadKey" android:text="9" />
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+                    <com.google.android.material.button.MaterialButton android:id="@+id/keyBack" style="@style/TvPadKey" android:text="⌫" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/key0" style="@style/TvPadKey" android:text="0" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/keyOk" style="@style/TvPadKey" android:text="OK" android:textColor="@color/accent" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+
+    <!-- Right CAM / DAT / INF column -->
+    <LinearLayout
+        android:id="@+id/overlayRightColumn"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginEnd="24dp"
+        android:layout_marginBottom="24dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/centerGuideEnd"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent="0.26">
+
+        <include
+            android:id="@+id/blockTopRight"
+            layout="@layout/item_overlay_block"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/blockMidRight"
+            layout="@layout/item_overlay_block"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginBottom="10dp"
+            android:layout_weight="1" />
+
+        <include
+            android:id="@+id/blockBottomRight"
+            layout="@layout/item_overlay_block"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

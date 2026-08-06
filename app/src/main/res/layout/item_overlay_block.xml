@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/panel"
+    android:clipChildren="true"
+    android:clipToPadding="true"
+    android:padding="1dp">
+
+    <ImageView
+        android:id="@+id/blockImage"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:contentDescription="@null"
+        android:scaleType="centerCrop"
+        android:visibility="gone" />
+
+    <androidx.media3.ui.PlayerView
+        android:id="@+id/blockVideo"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        app:keep_content_on_player_reset="false"
+        app:resize_mode="zoom"
+        app:shutter_background_color="@color/panel"
+        app:surface_type="surface_view"
+        app:use_controller="false" />
+
+    <TextView
+        android:id="@+id/blockText"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:padding="10dp"
+        android:shadowColor="#CC000000"
+        android:shadowDx="0"
+        android:shadowDy="1"
+        android:shadowRadius="4"
+        android:textStyle="bold"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/blockTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|top"
+        android:layout_margin="8dp"
+        android:alpha="0.65"
+        android:textAllCaps="true"
+        android:textColor="@color/accent"
+        android:textSize="10sp" />
+</FrameLayout>
