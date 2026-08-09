@@ -40,5 +40,13 @@
     <string name="apps_empty">Нет доступных приложений</string>
     <string name="hdmi_label">Входы HDMI</string>
     <string name="hdmi_failed">Не удалось переключить вход</string>
+    <string name="hdmi_auto_title">HDMI · АВТОПЕРЕКЛЮЧЕНИЕ</string>
+    <string name="hdmi_auto_hint">Сессия → HDMI консоли (ПС, обычно 1). Конец сессии → idle HDMI (обычно 2). 0 в idle = не переключать, остаться на Android.</string>
+    <string name="hdmi_auto_enable">Автопереключение</string>
+    <string name="hdmi_session_n">HDMI сессии (ПС)</string>
+    <string name="hdmi_idle_n">HDMI после сессии (0 = Android)</string>
+    <string name="hdmi_save">СОХРАНИТЬ HDMI</string>
+    <string name="hdmi_test_session">ТЕСТ СЕССИЯ</string>
+    <string name="hdmi_test_idle">ТЕСТ IDLE</string>
     <string name="launch_failed">Не удалось запустить</string>
 </resources>

@@ -82,6 +82,8 @@ class SessionActivity : AppCompatActivity() {
         session.observe(observer)
         startTicker()
         startPoll()
+        // PS / console on HDMI1 (Prefs): switch as soon as session UI is up.
+        binding.root.post { HdmiInputs.applySessionInput(this, prefs) }
     }
 
     override fun onResume() {
@@ -352,7 +354,11 @@ class SessionActivity : AppCompatActivity() {
 
     private fun render(state: SessionState) {
         if (!state.active) {
-            goLogin()
+            // Soft-kick / LAN clear: leave once, park on idle HDMI.
+            if (!ending) {
+                ending = true
+                goLogin(applyIdleHdmi = true)
+            }
             return
         }
         binding.userName.text = state.userName
@@ -395,16 +401,19 @@ class SessionActivity : AppCompatActivity() {
             KioskGuard.enabled = true
             LockTaskController.prepareLockTaskPackages(this@SessionActivity)
             SessionNetworkPolicy.onSessionIdle()
-            goLogin()
+            goLogin(applyIdleHdmi = true)
         }
     }
 
-    private fun goLogin() {
+    private fun goLogin(applyIdleHdmi: Boolean = false) {
         KioskGuard.enabled = true
         startActivity(
             Intent(this, LoginActivity::class.java)
                 .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_NEW_TASK),
         )
+        if (applyIdleHdmi) {
+            HdmiInputs.applyIdleInput(this, prefs)
+        }
         finish()
     }
 }

@@ -20,6 +20,7 @@ import ru.compclub.tvshell.data.ShellApi
 import ru.compclub.tvshell.kiosk.SessionNetworkPolicy
 import ru.compclub.tvshell.ui.LoginActivity
 import ru.compclub.tvshell.ui.SessionActivity
+import ru.compclub.tvshell.ui.launcher.HdmiInputs
 
 /**
  * LAN command API for backend / MikroTik / admin tools.
@@ -120,16 +121,17 @@ private class CommandHttpServer(port: Int) : NanoHTTPD(port) {
                 }
                 "session_end", "logout" -> {
                     val prefs = TvShellApp.instance.prefs
+                    val ctx = TvShellApp.instance
                     Thread {
                         runCatching { ShellApi(prefs).logout() }
                         SessionNetworkPolicy.onSessionIdle()
                     }.start()
                     TvShellApp.instance.session.clear()
-                    val ctx = TvShellApp.instance
                     ctx.startActivity(
                         Intent(ctx, LoginActivity::class.java)
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP)
                     )
+                    HdmiInputs.applyIdleInput(ctx, prefs)
                     json(Response.Status.OK, """{"status":"ok","action":"session_end"}""")
                 }
                 "open_login" -> {

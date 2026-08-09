@@ -18,6 +18,7 @@ import ru.compclub.tvshell.data.DeviceId
 import ru.compclub.tvshell.data.ShellApi
 import ru.compclub.tvshell.databinding.ActivitySetupBinding
 import ru.compclub.tvshell.kiosk.LockTaskController
+import ru.compclub.tvshell.ui.launcher.HdmiInputs
 
 class SetupActivity : AppCompatActivity() {
     private lateinit var binding: ActivitySetupBinding
@@ -53,6 +54,27 @@ class SetupActivity : AppCompatActivity() {
         binding.fanRefreshButton.setOnClickListener { loadFans() }
         binding.fanTestButton.setOnClickListener { runFanTest() }
         binding.fanBindButton.setOnClickListener { runFanBind() }
+
+        binding.hdmiAutoCheck.isChecked = prefs.hdmiAutoSwitch
+        binding.hdmiSessionInput.setText(prefs.hdmiSessionOrdinal.toString())
+        binding.hdmiIdleInput.setText(prefs.hdmiIdleOrdinal.toString())
+        binding.hdmiSaveButton.setOnClickListener { saveHdmiPrefs() }
+        binding.hdmiTestSessionButton.setOnClickListener {
+            saveHdmiPrefs(silent = true)
+            val ok = HdmiInputs.switchToOrdinal(this, prefs.hdmiSessionOrdinal)
+            toast(if (ok) "HDMI сессии" else getString(ru.compclub.tvshell.R.string.hdmi_failed))
+        }
+        binding.hdmiTestIdleButton.setOnClickListener {
+            saveHdmiPrefs(silent = true)
+            val n = prefs.hdmiIdleOrdinal
+            if (n <= 0) {
+                toast("Idle = 0 (Android, без HDMI)")
+                return@setOnClickListener
+            }
+            val ok = HdmiInputs.switchToOrdinal(this, n)
+            toast(if (ok) "HDMI idle" else getString(ru.compclub.tvshell.R.string.hdmi_failed))
+        }
+        refreshHdmiStatus()
 
         binding.boardSpinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener {
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
@@ -319,6 +341,28 @@ class SetupActivity : AppCompatActivity() {
 
     private fun updateFanVisibility(registered: Boolean) {
         binding.fanSection.visibility = if (registered) View.VISIBLE else View.GONE
+    }
+
+    private fun refreshHdmiStatus() {
+        val list = HdmiInputs.hdmiOnly(this)
+        binding.hdmiStatus.text = if (list.isEmpty()) {
+            "Passthrough HDMI не найдены (OEM скрыл входы)"
+        } else {
+            list.joinToString(" · ") { "#${it.ordinal} ${it.label}" }
+        }
+    }
+
+    private fun saveHdmiPrefs(silent: Boolean = false) {
+        prefs.hdmiAutoSwitch = binding.hdmiAutoCheck.isChecked
+        prefs.hdmiSessionOrdinal = binding.hdmiSessionInput.text?.toString()?.toIntOrNull() ?: 1
+        prefs.hdmiIdleOrdinal = binding.hdmiIdleInput.text?.toString()?.toIntOrNull() ?: 0
+        binding.hdmiSessionInput.setText(prefs.hdmiSessionOrdinal.toString())
+        binding.hdmiIdleInput.setText(prefs.hdmiIdleOrdinal.toString())
+        if (!silent) {
+            toast(
+                "HDMI: auto=${prefs.hdmiAutoSwitch} session=${prefs.hdmiSessionOrdinal} idle=${prefs.hdmiIdleOrdinal}",
+            )
+        }
     }
 
     private fun setBusy(busy: Boolean) {

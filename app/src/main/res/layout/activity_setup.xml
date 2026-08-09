@@ -112,6 +112,120 @@
                 android:text="@string/register_tv" />
         </LinearLayout>
 
+        <!-- HDMI auto-switch (PS booth) -->
+        <LinearLayout
+            android:id="@+id/hdmiSection"
+            android:layout_width="720dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="36dp"
+            android:background="@color/panel"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/hdmi_auto_title"
+                android:textColor="@color/accent"
+                android:textSize="18sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="@string/hdmi_auto_hint"
+                android:textColor="@color/text_muted"
+                android:textSize="13sp" />
+
+            <TextView
+                android:id="@+id/hdmiStatus"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/text"
+                android:textSize="15sp" />
+
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/hdmiAutoCheck"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:text="@string/hdmi_auto_enable"
+                android:textColor="@color/text" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TvEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:hint="@string/hdmi_session_n">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/hdmiSessionInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textColor="@color/text"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/TvEdit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
+                android:hint="@string/hdmi_idle_n">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/hdmiIdleInput"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:textColor="@color/text"
+                    android:textSize="20sp" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/hdmiSaveButton"
+                    style="@style/TvButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:text="@string/hdmi_save" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/hdmiTestSessionButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:minHeight="52dp"
+                    android:text="@string/hdmi_test_session"
+                    android:textColor="@color/accent"
+                    app:strokeColor="@color/accent" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/hdmiTestIdleButton"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:minHeight="52dp"
+                    android:text="@string/hdmi_test_idle"
+                    android:textColor="@color/accent"
+                    app:strokeColor="@color/accent" />
+            </LinearLayout>
+        </LinearLayout>
+
         <!-- Fan section -->
         <LinearLayout
             android:id="@+id/fanSection"
