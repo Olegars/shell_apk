@@ -494,6 +494,113 @@ class ShellApi(private val prefs: Prefs) {
         val message: String = "",
     )
 
+    data class ExtendOption(
+        val minutes: Int,
+        val label: String,
+        val cost: Double,
+        val canPay: Boolean,
+        val shortage: Double,
+        val suggestedTopup: Double,
+        val conflict: Boolean,
+    )
+
+    data class ExtendOptionsResult(
+        val ok: Boolean,
+        val balance: Double = 0.0,
+        val hourlyRate: Double = 0.0,
+        val options: List<ExtendOption> = emptyList(),
+        val message: String = "",
+    )
+
+    data class ExtendResult(
+        val ok: Boolean,
+        val applied: Boolean = false,
+        val needsTopup: Boolean = false,
+        val minutes: Int = 0,
+        val cost: Double = 0.0,
+        val balance: Double = 0.0,
+        val shortage: Double = 0.0,
+        val suggestedTopup: Double = 0.0,
+        val timeRemaining: String = "",
+        val remainingSeconds: Int = 0,
+        val message: String = "",
+    )
+
+    fun extendOptions(bookingId: Int): ExtendOptionsResult {
+        val qs = buildString {
+            append("terminal_id=${prefs.terminalId}")
+            if (bookingId > 0) append("&booking_id=$bookingId")
+        }
+        val req = Request.Builder()
+            .url("${prefs.serverUrl}/api/shell/session/extend/options?$qs")
+            .header("User-Agent", "CompClubTvShell/0.1")
+            .get()
+            .build()
+        return runCatching {
+            client.newCall(req).execute().use { resp ->
+                val obj = JSONObject(resp.body?.string().orEmpty().ifBlank { "{}" })
+                if (obj.optString("status") != "success") {
+                    return ExtendOptionsResult(
+                        ok = false,
+                        message = obj.optString("message", "Не удалось загрузить варианты"),
+                    )
+                }
+                val opts = mutableListOf<ExtendOption>()
+                val arr = obj.optJSONArray("options") ?: JSONArray()
+                for (i in 0 until arr.length()) {
+                    val o = arr.optJSONObject(i) ?: continue
+                    opts += ExtendOption(
+                        minutes = o.optInt("minutes"),
+                        label = o.optString("label"),
+                        cost = o.optDouble("cost"),
+                        canPay = o.optBoolean("can_pay"),
+                        shortage = o.optDouble("shortage"),
+                        suggestedTopup = o.optDouble("suggested_topup"),
+                        conflict = o.optBoolean("conflict"),
+                    )
+                }
+                ExtendOptionsResult(
+                    ok = true,
+                    balance = obj.optDouble("balance"),
+                    hourlyRate = obj.optDouble("hourly_rate"),
+                    options = opts,
+                )
+            }
+        }.getOrElse { ExtendOptionsResult(false, message = it.message ?: "extend options fail") }
+    }
+
+    fun extendSession(bookingId: Int, minutes: Int): ExtendResult {
+        val body = JSONObject()
+            .put("terminal_id", prefs.terminalId)
+            .put("minutes", minutes)
+        if (bookingId > 0) body.put("booking_id", bookingId)
+        val req = Request.Builder()
+            .url("${prefs.serverUrl}/api/shell/session/extend")
+            .header("User-Agent", "CompClubTvShell/0.1")
+            .post(body.toString().toRequestBody(jsonType))
+            .build()
+        return runCatching {
+            client.newCall(req).execute().use { resp ->
+                val obj = JSONObject(resp.body?.string().orEmpty().ifBlank { "{}" })
+                val applied = obj.optBoolean("applied")
+                val needsTopup = obj.optBoolean("needs_topup")
+                ExtendResult(
+                    ok = obj.optString("status") == "success" || applied || needsTopup,
+                    applied = applied,
+                    needsTopup = needsTopup,
+                    minutes = obj.optInt("minutes", minutes),
+                    cost = obj.optDouble("cost"),
+                    balance = obj.optDouble("balance"),
+                    shortage = obj.optDouble("shortage"),
+                    suggestedTopup = obj.optDouble("suggested_topup"),
+                    timeRemaining = obj.optString("time_remaining"),
+                    remainingSeconds = obj.optInt("remaining_seconds"),
+                    message = obj.optString("message", if (applied) "OK" else "Ошибка продления"),
+                )
+            }
+        }.getOrElse { ExtendResult(ok = false, message = it.message ?: "extend fail") }
+    }
+
     fun topUpRedirect(amount: Double, bookingId: Int, userId: Int): TopUpResult {
         val body = JSONObject()
             .put("terminal_id", prefs.terminalId)

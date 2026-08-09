@@ -3,6 +3,7 @@ package ru.compclub.tvshell.ui
 import android.content.Intent
 import android.os.Bundle
 import android.view.Gravity
+import android.view.KeyEvent
 import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -54,8 +55,6 @@ class SessionActivity : AppCompatActivity() {
         "other" to "Другое",
     )
 
-    private val topUpAmounts = listOf(300, 500, 1000, 2000)
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivitySessionBinding.inflate(layoutInflater)
@@ -96,6 +95,26 @@ class SessionActivity : AppCompatActivity() {
         pollJob?.cancel()
         session.removeObserver(observer)
         super.onDestroy()
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent?): Boolean {
+        if (event?.repeatCount == 0) {
+            when (keyCode) {
+                KeyEvent.KEYCODE_PROG_GREEN,
+                KeyEvent.KEYCODE_F2,
+                -> {
+                    if (binding.extendButton.isEnabled) showExtendDialog()
+                    return true
+                }
+                KeyEvent.KEYCODE_PROG_RED,
+                KeyEvent.KEYCODE_F3,
+                -> {
+                    showSosDialog()
+                    return true
+                }
+            }
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
     private fun buildLauncher() {
@@ -195,14 +214,125 @@ class SessionActivity : AppCompatActivity() {
     }
 
     private fun showExtendDialog() {
-        val labels = topUpAmounts.map { "$it ₽" }.toTypedArray()
-        AlertDialog.Builder(this)
-            .setTitle(R.string.extend_title)
-            .setItems(labels) { _, which ->
-                requestTopUpQr(topUpAmounts[which].toDouble())
+        binding.extendButton.isEnabled = false
+        Toast.makeText(this, R.string.extend_loading, Toast.LENGTH_SHORT).show()
+        lifecycleScope.launch {
+            val pack = withContext(Dispatchers.IO) {
+                runCatching { ShellApi(prefs).extendOptions(session.state.bookingId) }
+                    .getOrElse { ShellApi.ExtendOptionsResult(false, message = it.message ?: "") }
             }
+            binding.extendButton.isEnabled = true
+            if (!pack.ok || pack.options.isEmpty()) {
+                Toast.makeText(
+                    this@SessionActivity,
+                    pack.message.ifBlank { getString(R.string.extend_failed) },
+                    Toast.LENGTH_LONG,
+                ).show()
+                return@launch
+            }
+
+            val labels = pack.options.map { opt ->
+                when {
+                    opt.conflict -> getString(R.string.extend_option_busy, opt.label)
+                    opt.canPay -> getString(R.string.extend_option_fmt, opt.label, opt.cost)
+                    else -> getString(R.string.extend_option_short_fmt, opt.label, opt.shortage)
+                }
+            }.toTypedArray()
+
+            AlertDialog.Builder(this@SessionActivity)
+                .setTitle(R.string.extend_title)
+                .setItems(labels) { _, which ->
+                    val opt = pack.options.getOrNull(which) ?: return@setItems
+                    when {
+                        opt.conflict -> Toast.makeText(
+                            this@SessionActivity,
+                            getString(R.string.extend_option_busy, opt.label),
+                            Toast.LENGTH_SHORT,
+                        ).show()
+                        opt.canPay -> confirmExtendFromBalance(opt)
+                        else -> offerTopUpForExtend(opt)
+                    }
+                }
+                .setNegativeButton(android.R.string.cancel, null)
+                .show()
+        }
+    }
+
+    private fun confirmExtendFromBalance(opt: ShellApi.ExtendOption) {
+        AlertDialog.Builder(this)
+            .setTitle(R.string.extend_session)
+            .setMessage(getString(R.string.extend_confirm_fmt, opt.cost, opt.label))
             .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(R.string.extend_session) { _, _ ->
+                requestExtend(opt.minutes)
+            }
             .show()
+    }
+
+    private fun offerTopUpForExtend(opt: ShellApi.ExtendOption) {
+        val topup = opt.suggestedTopup.takeIf { it >= 100.0 } ?: maxOf(100.0, opt.shortage)
+        AlertDialog.Builder(this)
+            .setTitle(R.string.extend_session)
+            .setMessage(getString(R.string.extend_need_topup_fmt, opt.shortage, topup))
+            .setNegativeButton(android.R.string.cancel, null)
+            .setPositiveButton(R.string.extend_pay) { _, _ ->
+                requestTopUpQr(topup)
+            }
+            .show()
+    }
+
+    private fun requestExtend(minutes: Int) {
+        val state = session.state
+        binding.extendButton.isEnabled = false
+        lifecycleScope.launch {
+            val res = withContext(Dispatchers.IO) {
+                runCatching { ShellApi(prefs).extendSession(state.bookingId, minutes) }
+                    .getOrElse { ShellApi.ExtendResult(ok = false, message = it.message ?: "") }
+            }
+            binding.extendButton.isEnabled = true
+            when {
+                res.applied -> {
+                    val sec = res.remainingSeconds.takeIf { it > 0 }
+                        ?: TimeFormat.parseHms(res.timeRemaining)
+                    if (sec > 0) remainingSec = sec
+                    session.update {
+                        it.copy(
+                            balance = if (res.balance > 0) res.balance else it.balance,
+                            timeRemaining = res.timeRemaining.ifBlank { TimeFormat.formatHms(remainingSec) },
+                            remainingSeconds = remainingSec,
+                        )
+                    }
+                    Toast.makeText(
+                        this@SessionActivity,
+                        res.message.ifBlank { getString(R.string.extend_ok) },
+                        Toast.LENGTH_LONG,
+                    ).show()
+                }
+                res.needsTopup -> {
+                    val opt = ShellApi.ExtendOption(
+                        minutes = res.minutes,
+                        label = when (res.minutes) {
+                            30 -> "30 мин"
+                            60 -> "1 ч"
+                            120 -> "2 ч"
+                            180 -> "3 ч"
+                            else -> "${res.minutes} мин"
+                        },
+                        cost = res.cost,
+                        canPay = false,
+                        shortage = res.shortage,
+                        suggestedTopup = res.suggestedTopup,
+                        conflict = false,
+                    )
+                    offerTopUpForExtend(opt)
+                }
+                else -> Toast.makeText(
+                    this@SessionActivity,
+                    res.message.ifBlank { getString(R.string.extend_failed) },
+                    Toast.LENGTH_LONG,
+                ).show()
+            }
+        }
     }
 
     private fun requestTopUpQr(amount: Double) {

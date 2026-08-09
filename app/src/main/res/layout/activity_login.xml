@@ -74,9 +74,114 @@
             android:layout_height="wrap_content"
             android:gravity="center_horizontal"
             android:orientation="vertical"
-            android:paddingHorizontal="16dp"
-            android:paddingTop="16dp"
-            android:paddingBottom="12dp">
+            android:paddingHorizontal="12dp"
+            android:paddingTop="10dp"
+            android:paddingBottom="10dp">
+
+            <!-- Hotkey help (above login form) -->
+            <LinearLayout
+                android:id="@+id/hotkeyHelp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:background="@color/panel"
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:paddingHorizontal="12dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="4dp"
+                    android:text="@string/login_help_title"
+                    android:textAllCaps="true"
+                    android:textColor="@color/accent"
+                    android:textSize="10sp"
+                    android:textStyle="bold"
+                    android:letterSpacing="0.08" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/login_help_topup"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:background="@drawable/bg_hotkey_chip"
+                            android:paddingHorizontal="7dp"
+                            android:paddingVertical="2dp"
+                            android:text="@string/login_help_topup_key"
+                            android:textColor="@color/ok"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="14dp"
+                            android:text="@string/login_help_ai"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:background="@drawable/bg_hotkey_chip"
+                            android:paddingHorizontal="7dp"
+                            android:paddingVertical="2dp"
+                            android:text="@string/login_help_ai_key"
+                            android:textColor="@color/accent"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:gravity="center_vertical"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/login_help_sos"
+                            android:textColor="@color/text_muted"
+                            android:textSize="11sp" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="6dp"
+                            android:background="@drawable/bg_hotkey_chip"
+                            android:paddingHorizontal="7dp"
+                            android:paddingVertical="2dp"
+                            android:text="@string/login_help_sos_key"
+                            android:textColor="@color/danger"
+                            android:textSize="11sp"
+                            android:textStyle="bold" />
+                    </LinearLayout>
+                </LinearLayout>
+            </LinearLayout>
 
             <TextView
                 android:id="@+id/title"
@@ -87,26 +192,25 @@
                 android:gravity="center"
                 android:text="@string/login_title"
                 android:textColor="@color/accent"
-                android:textSize="26sp"
+                android:textSize="20sp"
                 android:textStyle="italic|bold" />
 
             <TextView
                 android:id="@+id/subtitle"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="4dp"
+                android:layout_marginTop="2dp"
                 android:gravity="center"
                 android:textColor="@color/text_muted"
-                android:textSize="11sp" />
+                android:textSize="10sp" />
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/phoneLayout"
                 style="@style/TvEdit"
-                android:layout_width="match_parent"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="12dp"
-                android:hint="@string/phone_hint"
-                android:maxWidth="320dp">
+                android:layout_marginTop="10dp"
+                android:hint="@string/phone_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/phoneInput"
@@ -118,19 +222,21 @@
                     android:importantForAutofill="no"
                     android:inputType="none"
                     android:maxLines="1"
+                    android:minHeight="36dp"
                     android:nextFocusDown="@id/pinInput"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:textColor="@color/text"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:id="@+id/pinLayout"
                 style="@style/TvEdit"
-                android:layout_width="match_parent"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:hint="@string/pin_hint"
-                android:maxWidth="320dp">
+                android:layout_marginTop="6dp"
+                android:hint="@string/pin_hint">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/pinInput"
@@ -142,32 +248,33 @@
                     android:inputType="none"
                     android:maxLength="4"
                     android:maxLines="1"
+                    android:minHeight="36dp"
                     android:nextFocusDown="@id/loginButton"
+                    android:paddingTop="8dp"
+                    android:paddingBottom="8dp"
                     android:textColor="@color/text"
-                    android:textSize="18sp" />
+                    android:textSize="14sp" />
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/loginButton"
                 style="@style/TvButton"
-                android:layout_width="match_parent"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
-                android:maxWidth="320dp"
-                android:minHeight="48dp"
+                android:minHeight="36dp"
                 android:text="@string/login_action"
                 android:textAlignment="center" />
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/settingsButton"
                 style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                android:layout_width="match_parent"
+                android:layout_width="220dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="6dp"
                 android:gravity="center"
-                android:maxWidth="360dp"
-                android:minHeight="48dp"
+                android:minHeight="36dp"
                 android:text="@string/settings"
                 android:textAlignment="center"
                 android:textColor="@color/accent"
@@ -178,24 +285,24 @@
                 android:id="@+id/errorText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:gravity="center"
                 android:textColor="@color/danger"
-                android:textSize="14sp"
+                android:textSize="12sp"
                 android:visibility="gone" />
 
             <ProgressBar
                 android:id="@+id/progress"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
-                android:layout_marginTop="8dp"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginTop="6dp"
                 android:visibility="gone" />
 
             <LinearLayout
                 android:id="@+id/numPad"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:background="@color/panel"
                 android:orientation="vertical"
                 android:padding="6dp">

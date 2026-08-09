@@ -11,19 +11,25 @@
         <item name="android:textColorHint">@color/text_muted</item>
     </style>
 
-    <style name="TvEdit" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox">
+    <style name="TvEdit" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
         <item name="boxStrokeColor">@color/accent</item>
         <item name="hintTextColor">@color/accent</item>
+        <item name="boxStrokeWidth">1dp</item>
+        <item name="boxStrokeWidthFocused">1.5dp</item>
     </style>
 
     <style name="TvButton" parent="Widget.MaterialComponents.Button">
-        <item name="android:minHeight">48dp</item>
+        <item name="android:minHeight">36dp</item>
+        <item name="android:minWidth">0dp</item>
+        <item name="android:paddingTop">6dp</item>
+        <item name="android:paddingBottom">6dp</item>
         <item name="android:gravity">center</item>
         <item name="android:textAlignment">center</item>
         <item name="android:textAllCaps">true</item>
         <item name="android:textStyle">bold</item>
-        <item name="android:textSize">15sp</item>
+        <item name="android:textSize">13sp</item>
         <item name="backgroundTint">@color/accent</item>
         <item name="android:textColor">@color/bg</item>
+        <item name="cornerRadius">4dp</item>
     </style>
 </resources>

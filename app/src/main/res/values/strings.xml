@@ -2,6 +2,13 @@
 <resources>
     <string name="app_name">CompClub TV</string>
     <string name="login_title">Вход в сессию</string>
+    <string name="login_help_title">Горячие клавиши</string>
+    <string name="login_help_topup">Пополнить</string>
+    <string name="login_help_topup_key">зелёная</string>
+    <string name="login_help_ai">Вопрос ИИ</string>
+    <string name="login_help_ai_key">удерж. Ё</string>
+    <string name="login_help_sos">Вызов админа</string>
+    <string name="login_help_sos_key">красная</string>
     <string name="phone_hint">Телефон</string>
     <string name="pin_hint">PIN (4 цифры)</string>
     <string name="login_action">Войти</string>
@@ -33,9 +40,17 @@
     <string name="sos_title">Вызов администратора</string>
     <string name="sos_sent">Вызов отправлен</string>
     <string name="extend_session">Продлить</string>
-    <string name="extend_title">Сумма пополнения</string>
+    <string name="extend_title">На сколько продлить?</string>
+    <string name="extend_option_fmt">%1$s · %2$.0f ₽</string>
+    <string name="extend_option_short_fmt">%1$s · не хватает %2$.0f ₽</string>
+    <string name="extend_option_busy">%1$s · занято</string>
+    <string name="extend_confirm_fmt">Списать %1$.0f ₽ и продлить на %2$s?</string>
+    <string name="extend_need_topup_fmt">На балансе не хватает %1$.0f ₽.\nПополнить на %2$.0f ₽?</string>
+    <string name="extend_pay">Оплатить</string>
+    <string name="extend_ok">Сессия продлена</string>
     <string name="extend_qr_hint">Оплатите %1$d ₽ по QR на телефоне</string>
-    <string name="extend_failed">Не удалось создать оплату</string>
+    <string name="extend_failed">Не удалось продлить</string>
+    <string name="extend_loading">Загрузка тарифа…</string>
     <string name="apps_label">Приложения</string>
     <string name="apps_empty">Нет доступных приложений</string>
     <string name="hdmi_label">Входы HDMI</string>
