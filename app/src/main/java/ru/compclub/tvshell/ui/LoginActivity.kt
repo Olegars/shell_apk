@@ -267,9 +267,7 @@ class LoginActivity : AppCompatActivity() {
             }
             setLoading(false)
             if (result.registered) {
-                prefs.terminalId = result.computerId
-                if (result.name.isNotBlank()) prefs.stationName = result.name
-                if (result.zoneSlug.isNotBlank()) prefs.zoneType = result.zoneSlug
+                prefs.applyStation(result.computerId, result.name, result.zoneSlug, result.clubName)
                 refreshSubtitle()
                 overlay?.start()
             } else {
@@ -283,6 +281,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun refreshSubtitle() {
+        binding.title.text = prefs.brandName()
         binding.subtitle.text = if (prefs.isConfigured()) {
             "TV · ${prefs.stationName.ifBlank { "terminal" }} #${prefs.terminalId} · ${prefs.serverUrl}\nLAN cmd :${BuildConfig.COMMAND_PORT}"
         } else {

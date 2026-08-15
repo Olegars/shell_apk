@@ -23,9 +23,10 @@ class ShellApi(private val prefs: Prefs) {
         val computerId: Int = 0,
         val name: String = "",
         val zoneSlug: String = "",
+        val clubName: String = "",
         val message: String = "",
     )
-    data class SimpleResult(val ok: Boolean, val message: String, val terminalId: Int = 0)
+    data class SimpleResult(val ok: Boolean, val message: String, val terminalId: Int = 0, val clubName: String = "")
 
     data class FanPair(
         val channel: Int,
@@ -78,6 +79,7 @@ class ShellApi(private val prefs: Prefs) {
                     computerId = obj.optInt("computer_id"),
                     name = obj.optString("name"),
                     zoneSlug = obj.optString("zone_slug", obj.optString("type", "tv")),
+                    clubName = obj.optString("club_name"),
                 )
             }
             return CheckResult(
@@ -105,6 +107,7 @@ class ShellApi(private val prefs: Prefs) {
                 ok = ok,
                 message = obj.optString("message", if (ok) "OK" else "Ошибка регистрации"),
                 terminalId = obj.optInt("terminal_id"),
+                clubName = obj.optString("club_name"),
             )
         }
     }
@@ -127,6 +130,8 @@ class ShellApi(private val prefs: Prefs) {
             if (obj.optString("status") != "success") {
                 return LoginResult(false, obj.optString("message", "Ошибка входа"))
             }
+            val club = obj.optString("club_name").trim()
+            if (club.isNotBlank()) prefs.clubName = club
             val user = obj.optJSONObject("user") ?: JSONObject()
             val timeStr = user.optString("time_remaining", "00:00:00")
             return LoginResult(

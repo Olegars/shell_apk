@@ -91,6 +91,7 @@ class SetupActivity : AppCompatActivity() {
         }
         binding.messageText.text = LockTaskController.statusLine(this)
         binding.messageText.setTextColor(getColor(ru.compclub.tvshell.R.color.text_muted))
+        applyBrand()
     }
 
     override fun onResume() {
@@ -124,9 +125,8 @@ class SetupActivity : AppCompatActivity() {
             }
             setBusy(false)
             if (result.registered) {
-                prefs.terminalId = result.computerId
-                prefs.stationName = result.name.ifBlank { prefs.stationName }
-                prefs.zoneType = result.zoneSlug.ifBlank { "tv" }
+                prefs.applyStation(result.computerId, result.name, result.zoneSlug, result.clubName)
+                applyBrand()
                 if (binding.nameInput.text.isNullOrBlank()) {
                     binding.nameInput.setText(result.name)
                 }
@@ -160,9 +160,8 @@ class SetupActivity : AppCompatActivity() {
             setBusy(false)
             showMsg(result.message, result.ok)
             if (result.ok && result.terminalId > 0) {
-                prefs.terminalId = result.terminalId
-                prefs.stationName = name
-                prefs.zoneType = "tv"
+                prefs.applyStation(result.terminalId, name, "tv", result.clubName)
+                applyBrand()
                 binding.statusText.text = "Зарегистрирован · #${result.terminalId} · $name · tv"
                 updateFanVisibility(true)
                 loadFans()
@@ -208,7 +207,7 @@ class SetupActivity : AppCompatActivity() {
                         "Комната: ${disc.spaceName.ifBlank { "—" }} · привязано ${disc.slotsUsed}/${disc.slotsMax}"
             }
             fillBoardSpinner()
-            renderBound(disc.bound)
+            renderBound(unbindRows(disc))
         }
     }
 
@@ -304,6 +303,32 @@ class SetupActivity : AppCompatActivity() {
         }
     }
 
+    private fun unbindRows(disc: ShellApi.FanDiscover): List<ShellApi.FanBound> {
+        val rows = linkedMapOf<Int, ShellApi.FanBound>()
+        for (b in disc.bound) {
+            if (b.fanId > 0) rows[b.fanId] = b
+        }
+        for (board in disc.boards) {
+            for (pair in board.pairs) {
+                if (pair.fanId <= 0 || pair.status == "free" || rows.containsKey(pair.fanId))
+                    continue
+                val extra = if (pair.status == "taken" && pair.spaceName.isNotBlank()) {
+                    " · ${pair.spaceName}"
+                } else {
+                    ""
+                }
+                rows[pair.fanId] = ShellApi.FanBound(
+                    fanId = pair.fanId,
+                    label = pair.label + extra,
+                    host = board.host,
+                    channel = pair.channel,
+                    channel2 = pair.channel2,
+                )
+            }
+        }
+        return rows.values.toList()
+    }
+
     private fun renderBound(bound: List<ShellApi.FanBound>) {
         binding.boundList.removeAllViews()
         if (bound.isEmpty()) {
@@ -363,6 +388,10 @@ class SetupActivity : AppCompatActivity() {
                 "HDMI: auto=${prefs.hdmiAutoSwitch} session=${prefs.hdmiSessionOrdinal} idle=${prefs.hdmiIdleOrdinal}",
             )
         }
+    }
+
+    private fun applyBrand() {
+        binding.setupTitle.text = "${prefs.brandName()} TV · SETUP"
     }
 
     private fun setBusy(busy: Boolean) {

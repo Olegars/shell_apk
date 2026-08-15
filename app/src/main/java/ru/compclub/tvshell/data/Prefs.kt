@@ -22,6 +22,19 @@ class Prefs(context: Context) {
         get() = sp.getString(KEY_ZONE, "tv")?.trim().orEmpty().ifBlank { "tv" }
         set(value) = sp.edit().putString(KEY_ZONE, value.trim().lowercase()).apply()
 
+    var clubName: String
+        get() = sp.getString(KEY_CLUB, "")?.trim().orEmpty()
+        set(value) = sp.edit().putString(KEY_CLUB, value.trim()).apply()
+
+    fun brandName(): String = clubName.ifBlank { "Клуб" }
+
+    fun applyStation(computerId: Int, name: String, zoneSlug: String, clubName: String = "") {
+        if (computerId > 0) terminalId = computerId
+        if (name.isNotBlank()) stationName = name
+        if (zoneSlug.isNotBlank()) zoneType = zoneSlug
+        if (clubName.isNotBlank()) this.clubName = clubName
+    }
+
     var adminPin: String
         get() = sp.getString(KEY_ADMIN_PIN, BuildConfig.DEFAULT_ADMIN_PIN)?.trim().orEmpty()
             .ifBlank { BuildConfig.DEFAULT_ADMIN_PIN }
@@ -58,6 +71,7 @@ class Prefs(context: Context) {
         private const val KEY_TERMINAL = "terminal_id"
         private const val KEY_NAME = "station_name"
         private const val KEY_ZONE = "zone_type"
+        private const val KEY_CLUB = "club_name"
         private const val KEY_ADMIN_PIN = "admin_pin"
         private const val KEY_HDMI_AUTO = "hdmi_auto_switch"
         private const val KEY_HDMI_SESSION = "hdmi_session_ordinal"

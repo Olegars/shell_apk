@@ -20,7 +20,7 @@
     <string name="balance">Баланс</string>
     <string name="time_left">Осталось</string>
     <string name="command_port">LAN команды: порт %1$d</string>
-    <string name="setup_title">REACTOR TV · SETUP</string>
+    <string name="setup_title">Клуб TV · SETUP</string>
     <string name="back">НАЗАД</string>
     <string name="station_name">Имя станции</string>
     <string name="check_hwid">ПРОВЕРИТЬ</string>
